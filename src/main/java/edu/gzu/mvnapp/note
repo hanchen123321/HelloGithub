@@ -1,0 +1,84 @@
+jsp是继承servlet类的Java文件
+jsp并非实际所需，是学习其他知识的基础
+serlet只能写java<%       java代码        %>
+JSP声明 <%!     %>
+
+page指令：import引入类
+    <%@ page import="java.sql.DatabaseMetaData" %>
+include指令：导入其他库
+
+11月1日
+
+forward动作：<jsp:forward page = "相对路径+文件名。jsp">//跳转页面，运行到这个位置直接转发。
+输出文本：PrintWriter
+实例：
+<%
+    int i = 5;
+    if (i % 2  == 0)
+    {
+        out.print("偶数")
+    }
+    else {
+        out.println("奇数")
+    }
+%>
+页面+Java写法
+<%
+    int i = 5;
+    if (i % 2  == 0)
+    {
+%>
+        <h1>偶数</h1>
+<%
+    }else {
+%>
+        <h1>奇数</h1>
+        }
+
+ get提交是提交到地址栏
+ post提交是标准输入输出
+ 所需表单的代码从layui官网中下载
+ 将Layui复制到webapp
+
+ post提交表单的方法和get的方法相同，不同的是post在表单必须加<% request.setCharacterEncoding("UTF-8"); %>
+ 来自https://blog.csdn.net/Java_I_ove/article/details/78398319
+
+11、过滤器
+过滤器是部署在部署描述符文件 web.xml 中的，然后映射到应用程序的部署描述符中 的 servlet 或 JSP 名称或URL 模式
+    1、public void doFilter (ServletRequest, ServletResponse, FilterChain)
+    由于客户端在链尾请求响应，每次请求/响应对通过链时，容器会调用此方法。
+    2、public void init(FilterConfig filterConfig)
+    由 web 容器调用此方法，向过滤器表明它将被放置在服务中。
+    3、public void destroy()
+    由 web 容器调用此方法，向过滤器表明它将从服务中被去掉。
+
+ java包放过滤器的包
+ 创建一个LogFilter implements Filter{
+    alt + enter重新方法
+    doFilter（）{
+        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+                String curData = new Date().toString();
+                String address =servletRequest.getRemoteAddr();
+                System.out.println(curData + " ip:" + address);
+                filterChain.doFilter(servletRequest,servletResponse);
+            }
+    }
+然后在web.xml写入以下代码
+<filter>
+           <filter-name>LogFilter</filter-name>
+           <filter-class>edu.gzu.mvnapp.LogFilter</filter-class>
+       </filter>
+       <filter-mapping>
+           <filter-name>LogFilter</filter-name>
+           <url-pattern>/*</url-pattern>
+       </filter-mapping>
+
+       <servlet>
+           <servlet-name>HelloServlet</servlet-name>
+           <servlet-class>edu.gzu.mvnapp.HelloServlet</servlet-class>
+       </servlet>
+       <servlet-mapping>
+           <servlet-name>HelloServlet</servlet-name>
+           <url-pattern>/*</url-pattern>
+       </servlet-mapping>
+ }
